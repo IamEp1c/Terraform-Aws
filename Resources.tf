@@ -1,5 +1,5 @@
 resource "aws_cloudtrail" "example" {
-  depends_on = [aws_s3_bucket_policy.example]
+  depends_on = [aws_s3_bucket_policy.waqasPolicy]
 
   name                          = "example"
   s3_bucket_name                = aws_instance.waqasEc2.id
@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "allow_access_from_another_account" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = ["123456789012"]
+      identifiers = ["1234567891022"]
     }
 
     actions = [
@@ -36,17 +36,6 @@ resource "aws_s3_bucket" "waqasBucket" {
   force_destroy = true
 }
 
-resource "aws_instance" "waqasEc2" {
-  ami           = "ami-0ebfd941bbafe70c6"
-  instance_type = "t2.micro"
-  subnet_id = "subnet-003bf3a4ca6691faa"
-  for_each = toset(var.availabilityZones)
-  tags = {
-    Name = each.value
-  }
-}
-
-
 
 resource "aws_instance" "waqasEc2" {
   ami           = "ami-0ebfd941bbafe70c6"
@@ -58,16 +47,12 @@ resource "aws_instance" "waqasEc2" {
   }
 }
 
-output "set_output" {
-  value = local.my_list
-}
-
+# need vpc for IG, Subnet etc. Have one default vpc here for that purpose
 resource "aws_default_vpc" "default" {
   tags = {
     Name = "Default VPC"
   }
 }
-
 
 resource "aws_iam_user" "newUser" {
   name = "TestUser1"

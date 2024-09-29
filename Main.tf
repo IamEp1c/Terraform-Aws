@@ -10,3 +10,7 @@ terraform {
 provider "aws" {
   region = "us-east-1"
 }
+
+output "set_output" {
+  value = local.my_list
+}
