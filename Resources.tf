@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "allow_access_from_another_account" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = ["1234567891022"]
+      identifiers = "1234567891022"
     }
 
     actions = [
@@ -41,10 +41,10 @@ resource "aws_instance" "waqasEc2" {
   ami           = "ami-0ebfd941bbafe70c6"
   instance_type = "t2.micro"
   subnet_id = "subnet-003bf3a4ca6691faa"
-  for_each = toset(var.availabilityZones)
-  tags = {
-    Name = each.value
-  }
+  # for_each = toset(var.availabilityZones)
+  #tags = {
+  # Name = each.value
+  #}
 }
 
 # need vpc for IG, Subnet etc. Have one default vpc here for that purpose
