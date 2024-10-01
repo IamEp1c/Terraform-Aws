@@ -9,14 +9,14 @@ resource "aws_cloudtrail" "example" {
 
 resource "aws_s3_bucket_policy" "waqasPolicy" {
   bucket = aws_s3_bucket.waqasBucket.id
-  policy = aws_iam_policy_document.allow_access_from_another_account.json
+  policy = data.aws_iam_policy_document.allow_access_from_another_account
 }
 
 data "aws_iam_policy_document" "allow_access_from_another_account" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = "1234567891022"
+      identifiers = "[1234567891022]"
     }
 
     actions = [
