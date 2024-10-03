@@ -9,15 +9,16 @@ resource "aws_cloudtrail" "example" {
 
 resource "aws_s3_bucket_policy" "waqasPolicy" {
   bucket = aws_s3_bucket.waqasBucket.id
-  policy = data.aws_iam_policy_document.allow_access_from_another_account
+  policy = data.aws_iam_policy_document.allow_access_from_another_account.json
 }
 
 data "aws_iam_policy_document" "allow_access_from_another_account" {
   statement {
-    principals {
-      type        = "AWS"
-      identifiers = "1234567891022"
-    }
+    # principals {
+    #   type        = "AWS"
+    #   # identifiers = ["AWS":"arn:aws:iam::AccountIDWithoutHyphens:root"]
+    #   identifiers = {"AWS":"arn:aws:iam::137068224818:root"}
+    # }
 
     actions = [
       "s3:GetObject",
@@ -40,7 +41,7 @@ resource "aws_s3_bucket" "waqasBucket" {
 resource "aws_instance" "waqasEc2" {
   ami           = "ami-0ebfd941bbafe70c6"
   instance_type = "t2.micro"
-  subnet_id = "subnet-003bf3a4ca6691faa"
+  subnet_id = "subnet-02b0f86f8d964c245"
   # for_each = toset(var.availabilityZones)
   #tags = {
   # Name = each.value
