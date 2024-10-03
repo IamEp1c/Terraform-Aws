@@ -16,7 +16,7 @@ data "aws_iam_policy_document" "allow_access_from_another_account" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = "[1234567891022]"
+      identifiers = "1234567891022"
     }
 
     actions = [
