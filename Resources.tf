@@ -2,7 +2,8 @@ resource "aws_cloudtrail" "example" {
   depends_on = [aws_s3_bucket_policy.waqasPolicy]
 
   name                          = "example"
-  s3_bucket_name                = aws_instance.waqasEc2.id
+  # s3_bucket_name                = aws_instance.waqasEc2.id
+  s3_bucket_name                = aws_s3_bucket.waqasBucket.id
   s3_key_prefix                 = "prefix"
   include_global_service_events = false
 }
@@ -10,15 +11,15 @@ resource "aws_cloudtrail" "example" {
 resource "aws_s3_bucket_policy" "waqasPolicy" {
   bucket = aws_s3_bucket.waqasBucket.id
   policy = data.aws_iam_policy_document.allow_access_from_another_account.json
+  #policy = "AWS":"arn:aws:iam::137068224818:root"
 }
 
 data "aws_iam_policy_document" "allow_access_from_another_account" {
   statement {
-    # principals {
-    #   type        = "AWS"
-    #   # identifiers = ["AWS":"arn:aws:iam::AccountIDWithoutHyphens:root"]
-    #   identifiers = {"AWS":"arn:aws:iam::137068224818:root"}
-    # }
+    principals {
+     type        = "AWS"
+     identifiers = ["137068224818"]
+    }
 
     actions = [
       "s3:GetObject",
@@ -41,7 +42,7 @@ resource "aws_s3_bucket" "waqasBucket" {
 resource "aws_instance" "waqasEc2" {
   ami           = "ami-0ebfd941bbafe70c6"
   instance_type = "t2.micro"
-  subnet_id = "subnet-02b0f86f8d964c245"
+  subnet_id = "subnet-06c5bfda9f5ef054f"
   # for_each = toset(var.availabilityZones)
   #tags = {
   # Name = each.value
