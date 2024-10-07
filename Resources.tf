@@ -4,32 +4,64 @@ resource "aws_cloudtrail" "example" {
   name                          = "example"
   # s3_bucket_name                = aws_instance.waqasEc2.id
   s3_bucket_name                = aws_s3_bucket.waqasBucket.id
-  s3_key_prefix                 = "prefix"
+  # s3_key_prefix                 = "prefix"
   include_global_service_events = false
 }
 
 resource "aws_s3_bucket_policy" "waqasPolicy" {
   bucket = aws_s3_bucket.waqasBucket.id
-  policy = data.aws_iam_policy_document.allow_access_from_another_account.json
+  policy = data.aws_iam_policy_document.example.json
   #policy = "AWS":"arn:aws:iam::137068224818:root"
 }
 
-data "aws_iam_policy_document" "allow_access_from_another_account" {
+# data "aws_iam_policy_document" "allow_access_from_another_account" {
+#   statement {
+
+#     sid    = "AWSCloudTrailAclCheck"
+#     effect = "Allow"
+
+#     principals {
+#      type        = "AWS"
+#      identifiers = ["arn:aws:iam::137068224818:root"]
+#     }
+
+#     actions = [
+#       "s3:GetObject",
+#       "s3:ListBucket",
+#     ]
+
+#     resources = [
+#       aws_s3_bucket.waqasBucket.arn,
+#       "${aws_s3_bucket.waqasBucket.arn}/*",
+#     ]
+#   }
+# }
+
+data "aws_iam_policy_document" "example" {
   statement {
+    sid    = "AWSCloudTrailAclCheck"
+    effect = "Allow"
+
     principals {
-     type        = "AWS"
-     identifiers = ["137068224818"]
+      type        = "AWS"
+      identifiers = ["cloudtrail.amazonaws.com"]
     }
 
-    actions = [
-      "s3:GetObject",
-      "s3:ListBucket",
-    ]
-
+    actions   = ["s3:GetBucketAcl"]
     resources = [
-      aws_s3_bucket.waqasBucket.arn,
-      "${aws_s3_bucket.waqasBucket.arn}/*",
-    ]
+      aws_s3_bucket.waqasBucket.arn, 
+      "${aws_s3_bucket.waqasBucket.arn}/*"
+      ]
+  }
+
+  statement {
+    sid    = "AWSCloudTrailWrite"
+    effect = "Allow"
+
+    principals {
+      type        = "AWS"
+      identifiers = ["cloudtrail.amazonaws.com"]
+    }
   }
 }
 
