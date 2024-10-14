@@ -8,7 +8,7 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-west-2"
+  region = "us-east-1"
 }
 
 output "set_output" {
