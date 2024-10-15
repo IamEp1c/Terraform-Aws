@@ -53,7 +53,8 @@ data "aws_iam_policy_document" "allow_access_from_another_account" {
   statement {
     principals {
       type        = "AWS"
-      identifiers = [aws_lb.creatingLB.arn]
+      // added elb root id still throwing error 400
+      identifiers = ["arn:aws:iam::127311923021:root"]
     }
 
     actions = [
@@ -62,8 +63,8 @@ data "aws_iam_policy_document" "allow_access_from_another_account" {
     ]
 
     resources = [
-      aws_s3_bucket.s3_bucket_for_logs_01.arn,
-      "${aws_s3_bucket.s3_bucket_for_logs_01.arn}/*",
+     aws_s3_bucket.s3_bucket_for_logs_01.arn,
+     "${aws_s3_bucket.s3_bucket_for_logs_01.arn}/*",
     ]
   }
 }
