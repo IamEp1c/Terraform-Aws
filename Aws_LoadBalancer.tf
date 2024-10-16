@@ -4,6 +4,7 @@ resource "aws_lb" "creatingLB" {
   load_balancer_type = "application"
   #security_groups    = [aws_security_group.lb_sg.id]
   subnets =           [	"subnet-0aef788bcd8d5319f" , "subnet-010f68d2392b7166e"]
+
   
   enable_deletion_protection = true
 
@@ -15,6 +16,16 @@ resource "aws_lb" "creatingLB" {
 
   tags = {
     Environment = "Dev"
+  }
+}
+
+resource "aws_security_group" "allow_tls" {
+  name        = "allow_tls"
+  description = "Allow TLS inbound traffic and all outbound traffic"
+  vpc_id      = aws_default_vpc.default.id
+
+  tags = {
+    Name = "allow_tls"
   }
 }
 
