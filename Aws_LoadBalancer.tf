@@ -3,7 +3,7 @@ resource "aws_lb" "test" {
   internal           = false
   load_balancer_type = "application"
   security_groups    = [aws_security_group.allow_tls.id]
-  subnets            = ["subnet-016f5fb94dbc0127b", "subnet-04c2cfb1bdb5da111"]
+  subnets            = ["subnet-01c143784f8be9cfe", "subnet-09d40cdd758f21bd1"]
 
   enable_deletion_protection = true
 
@@ -95,3 +95,6 @@ resource "aws_default_vpc" "default" {
     Name = "Default VPC"
   }
 }
+
+# made a new LB, facing an error when it came to cidr_ipv6 = aws_default_vpc.default.ipv6_cidr_block. I was able to add manually through the UI
+# will attempt again through terraform
