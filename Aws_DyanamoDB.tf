@@ -22,19 +22,11 @@ resource "aws_dynamodb_table" "dynamoDbPoc" {
 resource "aws_dynamodb_table_item" "DbTableItems" {
   table_name = aws_dynamodb_table.dynamoDbPoc.name
   hash_key = "userId"
-#   item = jsonencode({
-#     "userId" : "user123"
-#     "userName" : "slogenShade"
-#     "userEmail" : "slogenShade123@example.com"
-#   })
-   item = <<ITEM 
-   {
-    "userId" : "user123",
-    "userName" : "slogenShade",
-    "userEmail" : "slogenShade123@example.com"
-   }
-   ITEM
-    
+item = jsonencode({
+    userId    = { S = "user123" }
+    userName  = { S = "slogenShade" }
+    userEmail = { S = "slogenShade123@example.com" }
+  })
 }
 
 data "aws_dynamodb_table" "users" {
