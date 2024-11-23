@@ -30,12 +30,14 @@ item = jsonencode({
 }
 
 data "aws_dynamodb_table" "users" {
- name = "UsersTable"  # Specify the name of your DynamoDB table
+ name = aws_dynamodb_table_item.DbTableItems.table_name  # Specify the name of your DynamoDB table
 }
 
 data "aws_dynamodb_table_item" "user_item" {
  table_name = data.aws_dynamodb_table.users.name
- key = "userId"
+ // key = "userId"
+ // added a hashkey here 
+ key = aws_dynamodb_table_item.DbTableItems.hash_key
   # key = <<key # expects a value of the key here
 }
 
