@@ -1,14 +1,14 @@
-resource "aws_dynamodb_table" "dynamoDbPoc" {
-  name           = "dynamoDB_POC"
-  read_capacity  = 10
-  write_capacity = 10
-  hash_key       = "id"
+# resource "aws_dynamodb_table" "dynamoDbPoc" {
+#   name           = "dynamoDB_POC"
+#   read_capacity  = 10
+#   write_capacity = 10
+#   hash_key       = "id"
 
-  attribute {
-    name = "id"
-    type = "S"
-  }
-}
+#   attribute {
+#     name = "id"
+#     type = "S"
+#   }
+# }
 
 # resource "aws_dynamodb_table_item" "DbTableItems" {
 #   table_name = aws_dynamodb_table.dynamoDbPoc.name
@@ -21,15 +21,15 @@ resource "aws_dynamodb_table" "dynamoDbPoc" {
 #   })
 # }
 
-resource "aws_dynamodb_table_item" "DbTableItems" {
-  table_name = aws_dynamodb_table.dynamoDbPoc.name
-  hash_key = "id"
-  item = jsonencode({
-    id    = { S = "user123" }
-    userName  = { S = "slogenShade" }
-    userEmail = { S = "slogenShade123@example.com" }
-  })
-}
+# resource "aws_dynamodb_table_item" "DbTableItems" {
+#   table_name = aws_dynamodb_table.dynamoDbPoc.name
+#   hash_key = "id"
+#   item = jsonencode({
+#     id    = { S = "user123" }
+#     userName  = { S = "slogenShade" }
+#     userEmail = { S = "slogenShade123@example.com" }
+#   })
+# }
 
 # data "aws_dynamodb_table" "users" {
 #  name = aws_dynamodb_table_item.DbTableItems.table_name  # Specify the name of your DynamoDB table
