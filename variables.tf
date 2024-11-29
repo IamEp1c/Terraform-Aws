@@ -1,5 +1,5 @@
 variable "availabilityZones" {
-  type = list(string)
+  type        = list(string)
   description = "Descriptions of availability zones"
 }
 
