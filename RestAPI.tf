@@ -25,7 +25,36 @@ resource "aws_api_gateway_integration" "example_integration" {
   http_method             = aws_api_gateway_method.example_method.http_method
   integration_http_method = "GET"
   type                    = "AWS_PROXY"
-  uri                     = "arn:aws:lambda:us-east-1:${data.aws_caller_identity.current.account_id}:function:example-lambda" # here give your URI ID 
+  uri                     = aws_lambda_function.my_lambda.invoke_arn
+}
+
+# Lambda function for REST API
+resource "aws_lambda_function" "my_lambda" {
+  filename         = "lambda.zip"
+  function_name    = "myRestApiLambda"
+  role             = aws_iam_role.role.arn
+  handler          = "index.handler"
+  runtime          = "nodejs18.x"
+  source_code_hash = filebase64sha256("lambda.zip")
+}
+
+resource "aws_iam_role" "role" {
+  name               = "myrole"
+  assume_role_policy = data.aws_iam_policy_document.assume_role.json
+}
+
+# IAM
+data "aws_iam_policy_document" "assume_role" {
+  statement {
+    effect = "Allow"
+
+    principals {
+      type        = "Service"
+      identifiers = ["lambda.amazonaws.com"]
+    }
+
+    actions = ["sts:AssumeRole"]
+  }
 }
 
 resource "aws_api_gateway_deployment" "example_deployment" {
