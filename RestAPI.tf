@@ -18,6 +18,13 @@ resource "aws_api_gateway_method" "example_method" {
   http_method   = "GET"
   authorization = "NONE"
 }
+# added response 
+resource "aws_api_gateway_method_response" "example_response" {
+  rest_api_id   = aws_api_gateway_rest_api.myDemoApi.id
+  resource_id   = aws_api_gateway_resource.api_gateway_resource.id
+  http_method = aws_api_gateway_method.example_method.http_method
+  status_code = "200"
+}
 
 resource "aws_api_gateway_integration" "example_integration" {
   rest_api_id             = aws_api_gateway_rest_api.myDemoApi.id
