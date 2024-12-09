@@ -70,6 +70,28 @@ resource "aws_api_gateway_deployment" "example_deployment" {
   stage_name  = "dev"
 }
 
+resource "aws_lambda_function" "awsLambda" {
+  role = aws_iam_role.lambda_role.arn
+  function_name = "awsLambdafunc"
+}
+
+resource "aws_iam_role" "lambda_role" {
+  name = "lambda-role"
+
+  assume_role_policy = jsonencode({
+    Version = "2012-10-17",
+    Statement = [
+    {
+      Action = "sts:AssumeRole",
+      Effect = "Allow",
+      Principal = {
+        Service = "lambda.amazonaws.com"
+      }
+    }
+  ]
+})
+}
+
 data "aws_caller_identity" "current" {}
 
 output "api_endpoint" {
